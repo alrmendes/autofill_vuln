@@ -110,62 +110,10 @@
       <input class="hp" type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
 
       <div id="message" class="msg" aria-live="polite"></div>
-      <noscript>
-        <p class="help">JavaScript is disabled. You can enable it for a better experience, or set the form's <code>action</code> and <code>method</code> to post directly to your backend.</p>
-      </noscript>
+      
     </form>
   </main>
 
-  <script>
-    // ======== CONFIG ========
-    // Replace this URL with your backend endpoint (e.g., Formspree, your API route, etc.)
-    const ENDPOINT = "https://example.com/api/subscribe"; // e.g., https://formspree.io/f/xxxxx
-
-    const form = document.getElementById('subscribe-form');
-    const email = document.getElementById('email');
-    const msg = document.getElementById('message');
-    const btn = document.getElementById('submit-btn');
-    const hp = document.getElementById('website');
-
-    function showMessage(text, isError = false) {
-      msg.textContent = text;
-      msg.classList.toggle('error', isError);
-    }
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      // Simple client-side validation
-      if (hp.value) return; // bot filled honeypot; silently ignore
-      if (!email.value || !email.checkValidity()) {
-        showMessage('Please enter a valid email address.', true);
-        email.focus();
-        return;
-      }
-
-      btn.disabled = true;
-      showMessage('Submitting…');
-
-      try {
-        const payload = { email: email.value };
-        const res = await fetch(ENDPOINT, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-
-        if (!res.ok) throw new Error('Request failed: ' + res.status);
-
-        // Reset form and show success
-        form.reset();
-        showMessage('Thanks! Please check your inbox to confirm your subscription.');
-      } catch (err) {
-        console.error(err);
-        showMessage('Something went wrong. Please try again in a moment.', true);
-      } finally {
-        btn.disabled = false;
-      }
-    });
-  </script>
+  
 </body>
 </html>
